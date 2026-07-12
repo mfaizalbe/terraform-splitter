@@ -5,8 +5,9 @@ A simple Python tool to automatically split a `main.tf` into multiple Terraform 
 
 ## Features
 
-- Automatically detects `main.tf` in the current folder  
+- Automatically detects `main.tf` in the current folder or subfolders  
 - Splits Terraform blocks into separate files:
+  - `terraform.tf`
   - `provider.tf`
   - `variables.tf`
   - `outputs.tf`

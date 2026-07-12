@@ -34,6 +34,7 @@ def split_terraform(main_tf_path):
     current_file = None
     line_buffer = []    # buffer to store comments or empty lines before a block
     heredoc_terminator = None  # end marker of an in-progress heredoc, so its braces are ignored
+    last_file = None    # most recently written file, in case trailing comments follow it
 
     with open(main_tf_path) as f:
         for line in f:
@@ -74,6 +75,7 @@ def split_terraform(main_tf_path):
                     # open each output file once (truncates stale content from a previous run)
                     open_files[filename] = open(filename, "w")
                 current_file = open_files[filename]
+                last_file = current_file
 
                 # write any buffered comments to the file before the block
                 for buf_line in line_buffer:
@@ -99,6 +101,11 @@ def split_terraform(main_tf_path):
             if brace_count == 0:
                 block_type = None
                 current_file = None
+
+    # any trailing comments after the last block have nowhere to go but
+    # after the last block that was written
+    if line_buffer and last_file:
+        last_file.writelines(line_buffer)
 
     # close all open output files
     for f in open_files.values():
