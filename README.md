@@ -15,7 +15,8 @@ A simple Python tool to automatically split a `main.tf` into multiple Terraform 
   - `modules.tf`  
 - Splits resource blocks by type (e.g., `s3.tf`, `cloudfront.tf`)  
 - Preserves all comments  
-- Keeps multi-line blocks intact  
+- Keeps multi-line blocks and heredocs intact  
+- Backs up the original `main.tf` as `main.tf.bak` after splitting, so Terraform doesn't see duplicate blocks  
 
 ---
 
